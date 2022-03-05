@@ -17,11 +17,33 @@ export enum Mode {
   Reset = 3,
 }
 
+const firstVerse = {
+  nikaya: 'Khuddaka',
+  book: 'Dhammapada',
+  bookCode: 'dhp',
+  title: 'Yamakavagga: Pairs',
+  chapterNumber: 1,
+  author: 'Acharya Buddharakkhita',
+  verses: [
+    {
+      verseNumber: 1,
+      text: 'Mind precedes all mental states. Mind is their chief; they are all mind-wrought. If with an impure mind a person speaks or acts suffering follows him like the wheel that follows the foot of the ox.',
+    },
+  ],
+  citation:
+    'Yamakavagga: Pairs (dhp 1), translated from the Pali by Acharya Buddharakkhita. Access to Insight (https://www.accesstoinsight.org/)',
+  source: 'https://www.accesstoinsight.org/tipitaka/kn/dhp/dhp.01.budd.html',
+} as VerseResponse;
+
 const useQuote = () => {
   const bookCode = 'dhp';
-  const [quote, setQuote] = useState<QuoteResponse>();
+
+  const startQuote = new QuoteResponse();
+  startQuote.fromVerse(firstVerse);
+
+  const [quote, setQuote] = useState<QuoteResponse>(startQuote);
   const [mode, setMode] = useState<Mode>(Mode.Start);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useRef(new Animated.Value(1)).current;
 
   const nextQuote = () => {
     const url = `${config.api}/sutta/next/${bookCode}/${quote?.verseNumber}`;
@@ -30,7 +52,6 @@ const useQuote = () => {
       .get<VerseResponse>(url)
       .then(response => {
         const nextQuoteResponse = new QuoteResponse().fromVerse(response.data);
-        console.log(nextQuoteResponse);
         setQuote(nextQuoteResponse);
       })
       .catch(e => {
@@ -46,12 +67,10 @@ const useQuote = () => {
     }
 
     const url = `${config.api}/sutta/next/${bookCode}/${verseBeforePrevious}`;
-    console.log(url);
     axios
       .get<VerseResponse>(url)
       .then(response => {
         const nextQuoteResponse = new QuoteResponse().fromVerse(response.data);
-        console.log(nextQuoteResponse);
         setQuote(nextQuoteResponse);
       })
       .catch(e => {
@@ -60,9 +79,10 @@ const useQuote = () => {
   };
 
   useEffect(() => {
+    const startCount = Phase.ShowQuote;
+
     const getQuote = () => {
       const url = `${config.api}/quote/${bookCode}`;
-      console.log(url);
       axios
         .get<QuoteResponse>(url)
         .then(response => {
@@ -105,8 +125,7 @@ const useQuote = () => {
       count = count + 1;
     };
 
-    let count: number = 0;
-
+    let count: number = startCount;
     let handler: NodeJS.Timer | null = null;
 
     if (mode === Mode.Start) {
