@@ -15,14 +15,12 @@ const Quote = () => {
       opacity.setValue(1);
     })
     .onEnd(e => {
-      const swipe = new Swipe(e.translationX, e.translationY);
-      console.log(
-        `pan end:: right swipe: ${swipe.isRightSwipe()},left ${swipe.isLeftSwipe()}`,
-      );
+      const swipe = new Swipe(e);
+      console.log(swipe.toString());
 
-      if (swipe.isLeftSwipe()) {
+      if (swipe.isLeftSwipe) {
         nextQuote();
-      } else {
+      } else if (swipe.isRightSwipe) {
         previousQuote();
       }
     });
