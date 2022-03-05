@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Animated} from 'react-native';
 import QuoteText from './QuoteText';
 import useQuote, {Mode} from '../hooks/useQuote';
@@ -8,8 +8,10 @@ import {Swipe} from '../services/Swipe';
 import BackgroundImage from './BackgroundImage';
 
 const Quote = () => {
-  const imageNumber = 1;
+  const [imageNumber, setImageNumber] = useState(1);
+
   const {quote, nextQuote, previousQuote, opacity, setMode} = useQuote();
+
   const gesture = Gesture.Pan()
     .onStart(() => {
       setMode(Mode.Stop);
@@ -23,6 +25,10 @@ const Quote = () => {
         nextQuote();
       } else if (swipe.isRight) {
         previousQuote();
+      } else if (swipe.isDown) {
+        setImageNumber(2);
+      } else if (swipe.isUp) {
+        setImageNumber(1);
       }
     });
 

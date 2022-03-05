@@ -1,4 +1,9 @@
-const images: Array<any> = [
+interface Image {
+  name: string;
+  image: any;
+}
+
+const images: Array<Image> = [
   {
     name: 'background1.jpg',
     image: require('../assets/images/background1.jpg'),
