@@ -5,12 +5,13 @@ import useQuote, {Mode} from '../hooks/useQuote';
 import Citation from './Citation';
 import {GestureDetector, Gesture} from 'react-native-gesture-handler';
 import {Swipe} from '../services/Swipe';
+import BackgroundImage from './BackgroundImage';
 
 const Quote = () => {
+  const imageNumber = 1;
   const {quote, nextQuote, previousQuote, opacity, setMode} = useQuote();
   const gesture = Gesture.Pan()
     .onStart(() => {
-      console.log('pan start');
       setMode(Mode.Stop);
       opacity.setValue(1);
     })
@@ -42,17 +43,19 @@ const Quote = () => {
   });
 
   return (
-    <GestureDetector gesture={gesture}>
-      <View style={{...styles.topContainer}}>
-        <View />
-        <Animated.View style={{...styles.quoteContainer, opacity: opacity}}>
-          <QuoteText text={quote?.text} />
-        </Animated.View>
-        <Animated.View style={{opacity: opacity}}>
-          <Citation quote={quote} />
-        </Animated.View>
-      </View>
-    </GestureDetector>
+    <BackgroundImage imageNumber={imageNumber}>
+      <GestureDetector gesture={gesture}>
+        <View style={{...styles.topContainer}}>
+          <View />
+          <Animated.View style={{...styles.quoteContainer, opacity: opacity}}>
+            <QuoteText text={quote?.text} />
+          </Animated.View>
+          <Animated.View style={{opacity: opacity}}>
+            <Citation quote={quote} />
+          </Animated.View>
+        </View>
+      </GestureDetector>
+    </BackgroundImage>
   );
 };
 

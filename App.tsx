@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import Quote from './components/Quote';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import BackgroundImage from './components/BackgroundImage';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -32,9 +31,7 @@ const App = () => {
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollViewStyle}
           contentContainerStyle={styles.contentControllerStyle}>
-          <BackgroundImage>
-            <Quote />
-          </BackgroundImage>
+          <Quote />
         </ScrollView>
       </GestureHandlerRootView>
     </SafeAreaView>
