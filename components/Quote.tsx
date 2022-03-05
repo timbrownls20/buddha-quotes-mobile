@@ -18,9 +18,9 @@ const Quote = () => {
       const swipe = new Swipe(e);
       console.log(swipe.toString());
 
-      if (swipe.isLeftSwipe) {
+      if (swipe.isLeft) {
         nextQuote();
-      } else if (swipe.isRightSwipe) {
+      } else if (swipe.isRight) {
         previousQuote();
       }
     });

@@ -11,15 +11,35 @@ export class Swipe {
   ) {
     console.log(gesture);
   }
-  get isRightSwipe() {
-    return this.gesture.translationX > this._tolerance;
+  get isRight() {
+    return (
+      this.gesture.translationX > this._tolerance &&
+      Math.abs(this.gesture.translationY) < this._tolerance
+    );
   }
 
-  get isLeftSwipe() {
-    return this.gesture.translationX < 0 - this._tolerance;
+  get isLeft() {
+    return (
+      this.gesture.translationX < 0 - this._tolerance &&
+      Math.abs(this.gesture.translationY) < this._tolerance
+    );
+  }
+
+  get isUp() {
+    return (
+      this.gesture.translationY < 0 - this._tolerance &&
+      Math.abs(this.gesture.translationX) < this._tolerance
+    );
+  }
+
+  get isDown() {
+    return (
+      this.gesture.translationY > this._tolerance &&
+      Math.abs(this.gesture.translationX) < this._tolerance
+    );
   }
 
   toString() {
-    return `right: ${this.isRightSwipe}; left ${this.isLeftSwipe}`;
+    return `right: ${this.isRight}; left ${this.isLeft}; up ${this.isUp}; down ${this.isDown}`;
   }
 }
