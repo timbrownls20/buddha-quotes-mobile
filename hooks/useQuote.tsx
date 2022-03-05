@@ -4,6 +4,7 @@ import {Animated} from 'react-native';
 import config from '../config';
 import {QuoteResponse} from '../model/QuoteResponse';
 import {VerseResponse} from '../model/VerseResponse';
+import {firstVerse} from '../data/dhp';
 
 enum Phase {
   GetQuote = 1,
@@ -17,24 +18,6 @@ export enum Mode {
   Reset = 3,
 }
 
-const firstVerse = {
-  nikaya: 'Khuddaka',
-  book: 'Dhammapada',
-  bookCode: 'dhp',
-  title: 'Yamakavagga: Pairs',
-  chapterNumber: 1,
-  author: 'Acharya Buddharakkhita',
-  verses: [
-    {
-      verseNumber: 1,
-      text: 'Mind precedes all mental states. Mind is their chief; they are all mind-wrought. If with an impure mind a person speaks or acts suffering follows him like the wheel that follows the foot of the ox.',
-    },
-  ],
-  citation:
-    'Yamakavagga: Pairs (dhp 1), translated from the Pali by Acharya Buddharakkhita. Access to Insight (https://www.accesstoinsight.org/)',
-  source: 'https://www.accesstoinsight.org/tipitaka/kn/dhp/dhp.01.budd.html',
-} as VerseResponse;
-
 const useQuote = () => {
   const bookCode = 'dhp';
 
@@ -43,7 +26,7 @@ const useQuote = () => {
 
   const [quote, setQuote] = useState<QuoteResponse>(startQuote);
   const [mode, setMode] = useState<Mode>(Mode.Start);
-  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const opacity = useRef(new Animated.Value(1)).current;
 
   const nextQuote = () => {
     const url = `${config.api}/sutta/next/${bookCode}/${quote?.verseNumber}`;
@@ -94,8 +77,8 @@ const useQuote = () => {
     };
 
     const fadeIn = () => {
-      fadeAnim.setValue(0);
-      Animated.timing(fadeAnim, {
+      opacity.setValue(0);
+      Animated.timing(opacity, {
         toValue: 1,
         duration: config.interval,
         useNativeDriver: true,
@@ -103,8 +86,8 @@ const useQuote = () => {
     };
 
     const fadeOut = () => {
-      fadeAnim.setValue(1);
-      Animated.timing(fadeAnim, {
+      opacity.setValue(1);
+      Animated.timing(opacity, {
         toValue: 0,
         duration: config.interval,
         useNativeDriver: true,
@@ -135,9 +118,9 @@ const useQuote = () => {
     }
 
     return () => clearInterval(handler!);
-  }, [fadeAnim, mode]);
+  }, [opacity, mode]);
 
-  return {quote, nextQuote, previousQuote, fadeAnim, setMode};
+  return {quote, nextQuote, previousQuote, opacity, setMode};
 };
 
 export default useQuote;

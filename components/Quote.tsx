@@ -7,12 +7,12 @@ import {GestureDetector, Gesture} from 'react-native-gesture-handler';
 import {Swipe} from '../services/Swipe';
 
 const Quote = () => {
-  const {quote, nextQuote, previousQuote, fadeAnim, setMode} = useQuote();
+  const {quote, nextQuote, previousQuote, opacity, setMode} = useQuote();
   const gesture = Gesture.Pan()
     .onStart(() => {
       console.log('pan start');
       setMode(Mode.Stop);
-      fadeAnim.setValue(1);
+      opacity.setValue(1);
     })
     .onEnd(e => {
       const swipe = new Swipe(e.translationX, e.translationY);
@@ -47,10 +47,10 @@ const Quote = () => {
     <GestureDetector gesture={gesture}>
       <View style={{...styles.topContainer}}>
         <View />
-        <Animated.View style={{...styles.quoteContainer, opacity: fadeAnim}}>
+        <Animated.View style={{...styles.quoteContainer, opacity: opacity}}>
           <QuoteText text={quote?.text} />
         </Animated.View>
-        <Animated.View style={{opacity: fadeAnim}}>
+        <Animated.View style={{opacity: opacity}}>
           <Citation quote={quote} />
         </Animated.View>
       </View>
