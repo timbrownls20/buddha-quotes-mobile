@@ -61,7 +61,10 @@ const useQuote = () => {
   };
 
   useEffect(() => {
-    const startCount = Phase.ShowQuote;
+    const startCount: number =
+      mode === Mode.Start ? Phase.ShowQuote : Phase.HideQuote;
+
+    console.log(`useEffect, mode ${mode}`);
 
     const getQuote = () => {
       const url = `${config.api}/quote/${bookCode}`;
@@ -110,7 +113,7 @@ const useQuote = () => {
     let count: number = startCount;
     let handler: NodeJS.Timer | null = null;
 
-    if (mode === Mode.Start) {
+    if (mode === Mode.Start || mode === Mode.Reset) {
       handler = setInterval(quoteCycle, config.interval);
     } else if (mode === Mode.Stop) {
       clearInterval(handler!);
@@ -119,7 +122,7 @@ const useQuote = () => {
     return () => clearInterval(handler!);
   }, [opacity, mode]);
 
-  return {quote, nextQuote, previousQuote, opacity, setMode};
+  return {quote, nextQuote, previousQuote, opacity, setMode, mode};
 };
 
 export default useQuote;

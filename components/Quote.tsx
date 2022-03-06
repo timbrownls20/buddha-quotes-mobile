@@ -10,10 +10,10 @@ import useQuote, {Mode} from '../hooks/useQuote';
 import {useBackground} from '../hooks/useBackground';
 
 const Quote = () => {
-  const {quote, nextQuote, previousQuote, opacity, setMode} = useQuote();
+  const {quote, nextQuote, previousQuote, opacity, setMode, mode} = useQuote();
   const {imageNumber, nextImage, previousImage} = useBackground();
 
-  const gesture = Gesture.Pan()
+  const panGesture = Gesture.Pan()
     .onStart(() => {
       setMode(Mode.Stop);
       opacity.setValue(1);
@@ -33,6 +33,13 @@ const Quote = () => {
       }
     });
 
+  const touchGesture = Gesture.Tap().onEnd(() => {
+    console.log('tap');
+    setMode(mode === Mode.Start ? Mode.Stop : Mode.Start);
+  });
+
+  const composed = Gesture.Exclusive(panGesture, touchGesture);
+
   const styles = StyleSheet.create({
     topContainer: {
       flexDirection: 'column',
@@ -51,7 +58,7 @@ const Quote = () => {
 
   return (
     <BackgroundImage imageNumber={imageNumber}>
-      <GestureDetector gesture={gesture}>
+      <GestureDetector gesture={composed}>
         <View style={{...styles.topContainer}}>
           <View />
           <Animated.View style={{...styles.quoteContainer, opacity: opacity}}>

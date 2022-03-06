@@ -1,15 +1,11 @@
 interface IConfig {
   api: string;
   interval: number;
-  imageNumber: number | null;
-  imageCount: number;
 }
 
 const config: IConfig = {
   api: 'http://palicanon.codebuckets.com.au/api',
-  interval: 2000,
-  imageNumber: null,
-  imageCount: 10,
+  interval: 1000,
 };
 
 export default config;
