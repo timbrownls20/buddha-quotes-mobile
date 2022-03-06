@@ -30,7 +30,6 @@ const useQuote = () => {
 
   const nextQuote = () => {
     const url = `${config.api}/sutta/next/${bookCode}/${quote?.verseNumber}`;
-    console.log(url);
     axios
       .get<VerseResponse>(url)
       .then(response => {

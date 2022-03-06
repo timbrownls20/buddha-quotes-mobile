@@ -8,9 +8,8 @@ export class Swipe {
 
   constructor(
     private gesture: GestureStateChangeEvent<PanGestureHandlerEventPayload>,
-  ) {
-    console.log(gesture);
-  }
+  ) {}
+
   get isRight() {
     return (
       this.gesture.translationX > this._tolerance &&
