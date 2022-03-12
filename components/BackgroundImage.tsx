@@ -1,6 +1,5 @@
 import React from 'react';
 import {ImageBackground, StyleSheet} from 'react-native';
-import {BackgroundImage as BackgroundImageService} from '../services/BackgroundImage';
 
 const BackgroundImage = ({
   children,
@@ -9,8 +8,7 @@ const BackgroundImage = ({
   children: React.ReactNode;
   imageNumber: number;
 }) => {
-  const imageName = `background${imageNumber}.jpg`;
-  const backgroundImage = BackgroundImageService.GetImage(imageName);
+  const backgroundImage = require(`background${imageNumber}.jpg`);
 
   return (
     <ImageBackground source={backgroundImage} style={styles.container}>
