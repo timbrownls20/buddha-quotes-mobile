@@ -1,8 +1,8 @@
 import {useState} from 'react';
-import {images} from '../data/backgroundImages';
+import {BackgroundImage} from '../services/BackgroundImage';
 
 export const useBackground = () => {
-  const maxImageNumber = images.length;
+  const maxImageNumber = BackgroundImage.NumberOfImages;
 
   const [imageNumber, setImageNumber] = useState(1);
 

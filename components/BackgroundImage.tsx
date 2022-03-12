@@ -1,6 +1,6 @@
 import React from 'react';
 import {ImageBackground, StyleSheet} from 'react-native';
-import {getImage} from '../data/backgroundImages';
+import {BackgroundImage as BackgroundImageService} from '../services/BackgroundImage';
 
 const BackgroundImage = ({
   children,
@@ -10,7 +10,7 @@ const BackgroundImage = ({
   imageNumber: number;
 }) => {
   const imageName = `background${imageNumber}.jpg`;
-  const backgroundImage = getImage(imageName);
+  const backgroundImage = BackgroundImageService.GetImage(imageName);
 
   return (
     <ImageBackground source={backgroundImage} style={styles.container}>
