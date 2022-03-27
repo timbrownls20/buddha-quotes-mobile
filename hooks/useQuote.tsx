@@ -50,6 +50,7 @@ const useQuote = () => {
   };
 
   useEffect(() => {
+    let phase: number = Phase.GetQuote as number;
     const startCount: number =
       mode === Mode.Start ? Phase.ShowQuoteStart : Phase.ShowQuoteFinish;
 
@@ -86,7 +87,7 @@ const useQuote = () => {
     };
 
     const quoteCycle = () => {
-      let phase = (count % 10) + 1;
+      phase = (count % 10) + 1;
 
       console.log(`count ${count} phase ${phase}`);
 
@@ -106,8 +107,6 @@ const useQuote = () => {
 
     if (mode === Mode.Start || mode === Mode.Restart) {
       handler = setInterval(quoteCycle, config.interval);
-    } else if (mode === Mode.Stop) {
-      clearInterval(handler!);
     }
 
     return () => clearInterval(handler!);
