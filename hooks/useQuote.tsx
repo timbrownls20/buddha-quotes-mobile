@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 import config from '../config';
 import {QuoteResponse} from '../model/QuoteResponse';
@@ -49,42 +49,44 @@ const useQuote = () => {
       });
   };
 
+  const getQuote = () => {
+    const url = `${config.api}/quote/${bookCode}`;
+    axios
+      .get<QuoteResponse>(url)
+      .then(response => {
+        setQuote(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const fadeIn = useCallback(() => {
+    opacity.setValue(0);
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: config.interval,
+      useNativeDriver: true,
+    }).start();
+  }, [opacity]);
+
+  const fadeOut = useCallback(() => {
+    opacity.setValue(1);
+    Animated.timing(opacity, {
+      toValue: 0,
+      duration: config.interval,
+      useNativeDriver: true,
+    }).start();
+  }, [opacity]);
+
   useEffect(() => {
     let phase: number = Phase.GetQuote as number;
     const startCount: number =
       mode === Mode.Start ? Phase.ShowQuoteStart : Phase.ShowQuoteFinish;
+    let count: number = startCount;
+    let handler: NodeJS.Timer | null = null;
 
     console.log(`useEffect, mode ${mode}`);
-
-    const getQuote = () => {
-      const url = `${config.api}/quote/${bookCode}`;
-      axios
-        .get<QuoteResponse>(url)
-        .then(response => {
-          setQuote(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    };
-
-    const fadeIn = () => {
-      opacity.setValue(0);
-      Animated.timing(opacity, {
-        toValue: 1,
-        duration: config.interval,
-        useNativeDriver: true,
-      }).start();
-    };
-
-    const fadeOut = () => {
-      opacity.setValue(1);
-      Animated.timing(opacity, {
-        toValue: 0,
-        duration: config.interval,
-        useNativeDriver: true,
-      }).start();
-    };
 
     const quoteCycle = () => {
       phase = (count % 10) + 1;
@@ -102,15 +104,12 @@ const useQuote = () => {
       count = count + 1;
     };
 
-    let count: number = startCount;
-    let handler: NodeJS.Timer | null = null;
-
     if (mode === Mode.Start || mode === Mode.Restart) {
       handler = setInterval(quoteCycle, config.interval);
     }
 
     return () => clearInterval(handler!);
-  }, [opacity, mode]);
+  }, [opacity, mode, fadeIn, fadeOut]);
 
   return {quote, nextQuote, previousQuote, opacity, setMode, mode};
 };
