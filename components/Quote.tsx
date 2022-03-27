@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Animated} from 'react-native';
+import {StyleSheet, View, Animated, Platform} from 'react-native';
 
 import Citation from './Citation';
 import {GestureDetector, Gesture} from 'react-native-gesture-handler';
@@ -8,10 +8,23 @@ import BackgroundImage from './BackgroundImage';
 import QuoteText from './QuoteText';
 import useQuote, {Mode} from '../hooks/useQuote';
 import {useBackground} from '../hooks/useBackground';
+import ReactNativeHapticFeedback, {
+  HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
 
 const Quote = () => {
   const {quote, nextQuote, previousQuote, opacity, setMode, mode} = useQuote();
   const {imageNumber, nextImage, previousImage} = useBackground();
+
+  const options = {
+    enableVibrateFallback: false,
+    ignoreAndroidSystemSettings: true,
+  };
+
+  const hapticTriggerType = Platform.select({
+    ios: 'selection',
+    android: 'impactMedium',
+  });
 
   const panGesture = Gesture.Pan()
     .onStart(() => {
@@ -35,6 +48,12 @@ const Quote = () => {
 
   const touchGesture = Gesture.Tap().onEnd(() => {
     console.log('tap');
+
+    ReactNativeHapticFeedback.trigger(
+      hapticTriggerType as HapticFeedbackTypes,
+      options,
+    );
+
     setMode(mode === Mode.Start ? Mode.Stop : Mode.Start);
   });
 

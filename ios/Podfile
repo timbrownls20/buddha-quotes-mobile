@@ -12,6 +12,8 @@ target 'ReactNativePaliCanon' do
     :hermes_enabled => false
   )
 
+  pod 'RNReactNativeHapticFeedback', :path => '../node_modules/react-native-haptic-feedback'
+
   target 'ReactNativePaliCanonTests' do
     inherit! :complete
     # Pods for testing
