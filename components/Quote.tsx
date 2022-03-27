@@ -12,6 +12,7 @@ import ReactNativeHapticFeedback, {
   HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import {HapticOptions, HapticTriggerType} from '../services/Haptics';
+import {QuoteStyle} from '../assets/Styles';
 
 const Quote = () => {
   const {quote, nextQuote, previousQuote, opacity, setMode, mode} = useQuote();
@@ -50,26 +51,17 @@ const Quote = () => {
 
   const composed = Gesture.Exclusive(panGesture, touchGesture);
 
-  const styles = StyleSheet.create({
-    topContainer: {
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      backgroundColor: 'rgba(52, 52, 52, 0)',
-      flex: 1,
-    },
-    quoteContainer: {
-      padding: 15,
-      backgroundColor: 'rgba(52, 52, 52, 0.2)',
-      borderRadius: 5,
-      maxWidth: '90%',
-    },
-  });
+  const styles = StyleSheet.create(QuoteStyle as any);
 
   return (
     <BackgroundImage imageNumber={imageNumber}>
       <GestureDetector gesture={composed}>
-        <View style={{...styles.topContainer}}>
+        <View
+          style={
+            mode === Mode.Stop
+              ? styles.topContainerStopped
+              : styles.topContainer
+          }>
           <View />
           <Animated.View style={{...styles.quoteContainer, opacity: opacity}}>
             <QuoteText text={quote?.text} />

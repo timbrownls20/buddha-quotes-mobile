@@ -1,6 +1,9 @@
 import React from 'react';
 import {ImageBackground, StyleSheet} from 'react-native';
+import {BackgroundImageStyle} from '../assets/Styles';
 import {BackgroundImage as BackgroundImageService} from '../services/BackgroundImage';
+
+const styles = StyleSheet.create(BackgroundImageStyle);
 
 const BackgroundImage = ({
   children,
@@ -18,11 +21,5 @@ const BackgroundImage = ({
     </ImageBackground>
   );
 };
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default BackgroundImage;
