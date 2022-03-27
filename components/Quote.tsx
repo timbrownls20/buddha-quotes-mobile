@@ -6,13 +6,14 @@ import {GestureDetector, Gesture} from 'react-native-gesture-handler';
 import {Swipe} from '../services/Swipe';
 import BackgroundImage from './BackgroundImage';
 import QuoteText from './QuoteText';
-import useQuote, {Mode} from '../hooks/useQuote';
+import useQuote from '../hooks/useQuote';
 import {useBackground} from '../hooks/useBackground';
 import ReactNativeHapticFeedback, {
   HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import {HapticOptions, HapticTriggerType} from '../services/Haptics';
 import {QuoteStyle} from '../assets/Styles';
+import {Mode} from '../enums';
 
 const Quote = () => {
   const {quote, nextQuote, previousQuote, opacity, setMode, mode} = useQuote();
@@ -46,7 +47,9 @@ const Quote = () => {
       HapticOptions,
     );
 
-    setMode(mode === Mode.Start ? Mode.Stop : Mode.Start);
+    setMode(
+      mode === Mode.Start || mode === Mode.Restart ? Mode.Stop : Mode.Restart,
+    );
   });
 
   const composed = Gesture.Exclusive(panGesture, touchGesture);

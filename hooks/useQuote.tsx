@@ -5,18 +5,7 @@ import config from '../config';
 import {QuoteResponse} from '../model/QuoteResponse';
 import {VerseResponse} from '../model/VerseResponse';
 import {firstVerse} from '../data/dhp';
-
-enum Phase {
-  GetQuote = 1,
-  ShowQuote = 2,
-  HideQuote = 9,
-}
-
-export enum Mode {
-  Start = 1,
-  Stop = 2,
-  Reset = 3,
-}
+import {Mode, Phase} from '../enums';
 
 const useQuote = () => {
   const bookCode = 'dhp';
@@ -62,7 +51,7 @@ const useQuote = () => {
 
   useEffect(() => {
     const startCount: number =
-      mode === Mode.Start ? Phase.ShowQuote : Phase.HideQuote;
+      mode === Mode.Start ? Phase.ShowQuoteStart : Phase.ShowQuoteFinish;
 
     console.log(`useEffect, mode ${mode}`);
 
@@ -99,9 +88,11 @@ const useQuote = () => {
     const quoteCycle = () => {
       let phase = (count % 10) + 1;
 
+      console.log(`count ${count} phase ${phase}`);
+
       if (phase === Phase.GetQuote) {
         getQuote();
-      } else if (phase === Phase.ShowQuote) {
+      } else if (phase === Phase.ShowQuoteStart) {
         fadeIn();
       } else if (phase === Phase.HideQuote) {
         fadeOut();
@@ -113,7 +104,7 @@ const useQuote = () => {
     let count: number = startCount;
     let handler: NodeJS.Timer | null = null;
 
-    if (mode === Mode.Start || mode === Mode.Reset) {
+    if (mode === Mode.Start || mode === Mode.Restart) {
       handler = setInterval(quoteCycle, config.interval);
     } else if (mode === Mode.Stop) {
       clearInterval(handler!);
