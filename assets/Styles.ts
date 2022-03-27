@@ -1,22 +1,15 @@
-export const BackgroundImageStyle = {
+export const BackgroundImageStyle: any = {
   container: {
     flex: 1,
   },
 };
 
-export const QuoteStyle = {
+export const QuoteStyle: any = {
   topContainer: {
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'rgba(52, 52, 52, 0)',
-    flex: 1,
-  },
-  topContainerStopped: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.2)',
     flex: 1,
   },
   quoteContainer: {

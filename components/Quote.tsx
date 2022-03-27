@@ -51,17 +51,16 @@ const Quote = () => {
 
   const composed = Gesture.Exclusive(panGesture, touchGesture);
 
-  const styles = StyleSheet.create(QuoteStyle as any);
+  const styles = StyleSheet.create(QuoteStyle);
+  const topContainerStyle = {
+    ...styles.topContainer,
+    backgroundColor: `rgba(52, 52, 52, ${mode === Mode.Stop ? '0.2' : '0'})`,
+  };
 
   return (
     <BackgroundImage imageNumber={imageNumber}>
       <GestureDetector gesture={composed}>
-        <View
-          style={
-            mode === Mode.Stop
-              ? styles.topContainerStopped
-              : styles.topContainer
-          }>
+        <View style={topContainerStyle}>
           <View />
           <Animated.View style={{...styles.quoteContainer, opacity: opacity}}>
             <QuoteText text={quote?.text} />
